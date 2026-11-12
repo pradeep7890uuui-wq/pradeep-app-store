@@ -307,7 +307,7 @@
 
     .btn-details:hover { border-color: var(--accent-cyan); color: var(--accent-cyan); }
 
-    /* Modal / Details Popup Styles */
+    /* Modal Styles */
     .modal-backdrop {
       position: fixed;
       inset: 0;
@@ -423,6 +423,10 @@
       50% { transform: scale(1.45); opacity: 0.55; }
     }
   </style>
+
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 </head>
 <body>
   <div class="bg-graphics">
@@ -452,7 +456,7 @@
     </section>
 
     <main id="appsGrid" class="apps-grid">
-      <div class="empty-state">Loading apps...</div>
+      <div class="empty-state">Loading apps from cloud...</div>
     </main>
 
     <footer>
@@ -468,57 +472,41 @@
     </div>
   </div>
 
-  <script id="embeddedStoreData" type="application/json">[]</script>
-
   <script>
-    const DB_NAME = 'PradeepMultiAppStoreDB';
-    const STORE_NAME = 'apps';
+    // Firebase Configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyB2Cd8JUiS1g1450I0qqEYDYLWoEUKHtZA",
+      authDomain: "pradeep-app-store.firebaseapp.com",
+      projectId: "pradeep-app-store",
+      storageBucket: "pradeep-app-store.appspot.com",
+      messagingSenderId: "452581985951",
+      appId: "1:452581985951:web:7d3995e3a642b592c621be",
+      measurementId: "G-CBZ9SRG6EZ"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const dbRef = firebase.database().ref('apps');
+
     let appsList = [];
 
-    function openDB() {
-      return new Promise((resolve, reject) => {
-        const req = indexedDB.open(DB_NAME, 1);
-        req.onupgradeneeded = () => req.result.createObjectStore(STORE_NAME, { keyPath: 'id' });
-        req.onsuccess = () => resolve(req.result);
-        req.onerror = () => reject(req.error);
+    function loadStoreApps() {
+      dbRef.on('value', (snapshot) => {
+        const data = snapshot.val();
+        if (data) {
+          appsList = Object.values(data).sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+        } else {
+          appsList = [];
+        }
+        renderApps();
+      }, (error) => {
+        console.error("Error loading apps:", error);
       });
-    }
-
-    async function loadStoreApps() {
-      const mergedMap = new Map();
-      try {
-        const embedded = JSON.parse(document.getElementById('embeddedStoreData').textContent.trim() || '[]');
-        embedded.forEach(a => mergedMap.set(a.id, a));
-      } catch (_) {}
-
-      try {
-        const res = await fetch(`./apps.json?t=${Date.now()}`);
-        if (res.ok) (await res.json()).forEach(a => mergedMap.set(a.id, a));
-      } catch (_) {}
-
-      try {
-        const db = await openDB();
-        const tx = db.transaction(STORE_NAME, 'readonly');
-        const local = await new Promise(res => {
-          const req = tx.objectStore(STORE_NAME).getAll();
-          req.onsuccess = () => res(req.result || []);
-        });
-        local.forEach(a => mergedMap.set(a.id, a));
-      } catch (_) {}
-
-      appsList = Array.from(mergedMap.values()).sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
-      renderApps();
     }
 
     function downloadApp(appId) {
       const app = appsList.find(a => a.id === appId);
       if (!app) return;
       let href = app.apkUrl || app.apkBase64 || '';
-      let revoke = false;
-      if (app.apkBlob) {
-        href = URL.createObjectURL(app.apkBlob);
-        revoke = true;
-      }
       if (!href) { alert('APK file not found.'); return; }
       const a = document.createElement('a');
       a.href = href;
@@ -526,7 +514,6 @@
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
-      if (revoke) setTimeout(() => URL.revokeObjectURL(href), 5000);
     }
 
     function openDetailsModal(appId) {
@@ -615,7 +602,6 @@
       }).join('');
     }
 
-    window.addEventListener('focus', loadStoreApps);
     loadStoreApps();
   </script>
 </body>
