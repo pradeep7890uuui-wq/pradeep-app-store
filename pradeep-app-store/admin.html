@@ -36,7 +36,6 @@
       padding: 24px 16px 48px;
     }
 
-    /* Animated High-Graphical Mesh Background (Matches index.html) */
     .bg-graphics {
       position: fixed;
       inset: 0;
@@ -53,32 +52,9 @@
       animation: floatOrb 14s ease-in-out infinite alternate;
     }
 
-    .orb-1 {
-      width: 340px;
-      height: 340px;
-      background: var(--accent-blue);
-      top: -80px;
-      left: -60px;
-    }
-
-    .orb-2 {
-      width: 300px;
-      height: 300px;
-      background: var(--accent-red);
-      bottom: 5%;
-      right: -60px;
-      animation-delay: -5s;
-    }
-
-    .orb-3 {
-      width: 240px;
-      height: 240px;
-      background: var(--accent-cyan);
-      top: 45%;
-      left: 40%;
-      opacity: 0.2;
-      animation-delay: -9s;
-    }
+    .orb-1 { width: 340px; height: 340px; background: var(--accent-blue); top: -80px; left: -60px; }
+    .orb-2 { width: 300px; height: 300px; background: var(--accent-red); bottom: 5%; right: -60px; animation-delay: -5s; }
+    .orb-3 { width: 240px; height: 240px; background: var(--accent-cyan); top: 45%; left: 40%; opacity: 0.2; animation-delay: -9s; }
 
     .grid-overlay {
       position: absolute;
@@ -90,10 +66,7 @@
       mask-image: radial-gradient(circle at center, black 40%, transparent 95%);
     }
 
-    .container {
-      width: 100%;
-      max-width: 100%;
-    }
+    .container { width: 100%; max-width: 100%; }
 
     header {
       display: flex;
@@ -189,9 +162,7 @@
       box-shadow: 0 0 0 3px rgba(0, 229, 255, 0.14);
     }
 
-    .form-group {
-      margin-bottom: 16px;
-    }
+    .form-group { margin-bottom: 16px; }
 
     label {
       display: block;
@@ -242,20 +213,10 @@
       background: rgba(0, 229, 255, 0.06);
     }
 
-    .drop-zone strong {
-      font-size: 0.92rem;
-      margin-bottom: 4px;
-    }
+    .drop-zone strong { font-size: 0.92rem; margin-bottom: 4px; }
+    .drop-zone span { font-size: 0.78rem; color: var(--text-muted); }
 
-    .drop-zone span {
-      font-size: 0.78rem;
-      color: var(--text-muted);
-    }
-
-    .url-row {
-      display: flex;
-      gap: 8px;
-    }
+    .url-row { display: flex; gap: 8px; }
 
     .btn-small {
       background: rgba(25, 33, 52, 0.9);
@@ -270,10 +231,7 @@
       transition: 0.2s;
     }
 
-    .btn-small:hover {
-      border-color: var(--accent-cyan);
-      color: var(--accent-cyan);
-    }
+    .btn-small:hover { border-color: var(--accent-cyan); color: var(--accent-cyan); }
 
     .preview-icon {
       width: 64px;
@@ -291,10 +249,7 @@
       margin-top: 12px;
     }
 
-    .ss-thumb-wrap {
-      position: relative;
-      display: inline-block;
-    }
+    .ss-thumb-wrap { position: relative; display: inline-block; }
 
     .ss-thumb-wrap img {
       height: 78px;
@@ -348,31 +303,9 @@
       transition: transform 0.2s, box-shadow 0.2s;
     }
 
-    .btn-primary {
-      background: linear-gradient(135deg, var(--accent-blue), #1e62d0);
-      color: #fff;
-    }
-
-    .btn-green {
-      background: linear-gradient(135deg, var(--accent-green), #00c853);
-      color: #031409;
-    }
-
-    .btn-green:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 24px rgba(0, 230, 118, 0.35);
-    }
-
-    .btn-outline {
-      background: rgba(10, 14, 23, 0.75);
-      border: 1px solid var(--border);
-      color: var(--text-main);
-    }
-
-    .btn-outline:hover {
-      border-color: var(--accent-cyan);
-      color: var(--accent-cyan);
-    }
+    .btn-primary { background: linear-gradient(135deg, var(--accent-blue), #1e62d0); color: #fff; }
+    .btn-green { background: linear-gradient(135deg, var(--accent-green), #00c853); color: #031409; }
+    .btn-green:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0, 230, 118, 0.35); }
 
     .published-item {
       display: flex;
@@ -386,11 +319,7 @@
       gap: 12px;
     }
 
-    .pub-left {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
+    .pub-left { display: flex; align-items: center; gap: 12px; }
 
     .pub-left img {
       width: 46px;
@@ -411,9 +340,7 @@
       font-size: 0.82rem;
     }
 
-    .btn-del:hover {
-      background: rgba(255, 59, 92, 0.28);
-    }
+    .btn-del:hover { background: rgba(255, 59, 92, 0.28); }
 
     .status {
       margin-top: 12px;
@@ -443,15 +370,17 @@
       0% { transform: translate(0, 0) scale(1); }
       100% { transform: translate(35px, 25px) scale(1.12); }
     }
-
     @keyframes pulse {
       0%, 100% { transform: scale(1); opacity: 1; }
       50% { transform: scale(1.45); opacity: 0.55; }
     }
   </style>
+
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 </head>
 <body>
-  <!-- Animated Graphical Background (Matches index.html) -->
   <div class="bg-graphics">
     <div class="orb orb-1"></div>
     <div class="orb orb-2"></div>
@@ -495,7 +424,7 @@
             <input type="file" id="apkInput" accept=".apk,application/vnd.android.package-archive" class="hidden" onchange="onApkSelected(event)" />
           </div>
 
-          <!-- App Icon Input (Local File OR External Image URL) -->
+          <!-- App Icon Input -->
           <div class="box-panel">
             <div class="drop-zone" onclick="document.getElementById('iconInput').click()">
               <strong>2. App Icon (Local File)</strong>
@@ -509,13 +438,13 @@
           </div>
         </div>
 
-        <!-- Unlimited App Screenshots / Images (Local Files + External URLs) -->
+        <!-- App Screenshots / Images -->
         <div class="box-panel" style="margin-bottom: 16px;">
-          <label style="margin-bottom: 2px; color: var(--text-main); font-weight: 600;">3. App Images / Screenshots (Add As Many As You Want)</label>
-          <span style="font-size: 0.8rem; color: var(--text-muted);">Add multiple local images (they stay appended—adding more won't erase previous ones) or paste external image links.</span>
+          <label style="margin-bottom: 2px; color: var(--text-main); font-weight: 600;">3. App Images / Screenshots</label>
+          <span style="font-size: 0.8rem; color: var(--text-muted);">Add local images or paste external image links.</span>
 
           <div class="drop-zone" style="min-height: 75px; margin-top: 6px;" onclick="document.getElementById('ssInput').click()">
-            <strong>+ Click to Add Local Images (Select 1 or Many)</strong>
+            <strong>+ Click to Add Local Images</strong>
             <span>Supports PNG, JPG, WEBP, GIF</span>
           </div>
           <input type="file" id="ssInput" accept="image/*" multiple class="hidden" onchange="onScreenshotsFileSelected(event)" />
@@ -554,27 +483,34 @@
           <input type="text" id="inputNotes" value="Initial official release." />
         </div>
 
-        <button class="btn btn-green" onclick="publishApp()">+ Publish App to Website</button>
+        <button class="btn btn-green" onclick="publishApp()">+ Publish App to Cloud</button>
         <div id="pubStatus" class="status"></div>
       </div>
 
       <!-- Published Apps Manager -->
       <div class="card">
-        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
-          <h2 style="font-size: 1.1rem;">Published Apps (<span id="appCount">0</span>)</h2>
-          <button class="btn btn-outline" style="width: auto; margin-top: 0; padding: 9px 14px; font-size: 0.85rem;" onclick="exportStandaloneStore()">
-            Export Standalone index.html (All Apps + Images + APKs)
-          </button>
-        </div>
+        <h2 style="font-size: 1.1rem;">Cloud Published Apps (<span id="appCount">0</span>)</h2>
         <div id="publishedList"></div>
       </div>
     </div>
   </div>
 
   <script>
-    const ADMIN_PIN = '1234'; // Change this to your personal secret PIN
-    const DB_NAME = 'PradeepMultiAppStoreDB';
-    const STORE_NAME = 'apps';
+    const ADMIN_PIN = '1234';
+
+    // Firebase Configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyB2Cd8JUiS1g1450I0qqEYDYLWoEUKHtZA",
+      authDomain: "pradeep-app-store.firebaseapp.com",
+      projectId: "pradeep-app-store",
+      storageBucket: "pradeep-app-store.appspot.com",
+      messagingSenderId: "452581985951",
+      appId: "1:452581985951:web:7d3995e3a642b592c621be",
+      measurementId: "G-CBZ9SRG6EZ"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const dbRef = firebase.database().ref('apps');
 
     let selectedApk = null;
     let selectedIconSrc = '';
@@ -709,45 +645,6 @@
       `).join('');
     }
 
-    function openDB() {
-      return new Promise((resolve, reject) => {
-        const req = indexedDB.open(DB_NAME, 1);
-        req.onupgradeneeded = () => req.result.createObjectStore(STORE_NAME, { keyPath: 'id' });
-        req.onsuccess = () => resolve(req.result);
-        req.onerror = () => reject(req.error);
-      });
-    }
-
-    async function saveAppRecord(record) {
-      const db = await openDB();
-      return new Promise((resolve, reject) => {
-        const tx = db.transaction(STORE_NAME, 'readwrite');
-        tx.objectStore(STORE_NAME).put(record);
-        tx.oncomplete = () => resolve();
-        tx.onerror = () => reject(tx.error);
-      });
-    }
-
-    async function getAllAppRecords() {
-      const db = await openDB();
-      return new Promise((resolve, reject) => {
-        const tx = db.transaction(STORE_NAME, 'readonly');
-        const req = tx.objectStore(STORE_NAME).getAll();
-        req.onsuccess = () => resolve(req.result || []);
-        req.onerror = () => reject(req.error);
-      });
-    }
-
-    async function deleteAppRecord(id) {
-      const db = await openDB();
-      return new Promise((resolve, reject) => {
-        const tx = db.transaction(STORE_NAME, 'readwrite');
-        tx.objectStore(STORE_NAME).delete(id);
-        tx.oncomplete = () => resolve();
-        tx.onerror = () => reject(tx.error);
-      });
-    }
-
     function showStatus(msg, isError = false) {
       const el = document.getElementById('pubStatus');
       el.textContent = msg;
@@ -765,24 +662,30 @@
         return;
       }
 
-      const record = {
-        id: 'app_' + Date.now(),
-        name,
-        version: document.getElementById('inputVersion').value.trim() || 'v1.0.0',
-        developer: document.getElementById('inputDev').value.trim() || 'Pradeep King',
-        description: document.getElementById('inputDesc').value.trim(),
-        notes: document.getElementById('inputNotes').value.trim(),
-        fileName: selectedApk.name,
-        sizeText: formatBytes(selectedApk.size),
-        apkBlob: selectedApk,
-        iconSrc: selectedIconSrc,
-        screenshots: [...selectedScreenshots],
-        createdAt: Date.now()
-      };
+      showStatus('Uploading APK and publishing to Firebase cloud...');
 
       try {
-        await saveAppRecord(record);
-        showStatus(`"${name}" published with ${selectedScreenshots.length} image(s)! It is now live on index.html.`);
+        const apkBase64 = await fileToDataUrl(selectedApk);
+        const appId = 'app_' + Date.now();
+        const record = {
+          id: appId,
+          name,
+          version: document.getElementById('inputVersion').value.trim() || 'v1.0.0',
+          developer: document.getElementById('inputDev').value.trim() || 'Pradeep King',
+          description: document.getElementById('inputDesc').value.trim(),
+          notes: document.getElementById('inputNotes').value.trim(),
+          fileName: selectedApk.name,
+          sizeText: formatBytes(selectedApk.size),
+          apkBase64,
+          iconSrc: selectedIconSrc,
+          screenshots: [...selectedScreenshots],
+          createdAt: Date.now()
+        };
+
+        // Save to Firebase Database
+        await dbRef.child(appId).set(record);
+
+        showStatus(`"${name}" successfully published to cloud and synced across devices!`);
 
         selectedApk = null;
         selectedIconSrc = '';
@@ -805,83 +708,38 @@
     }
 
     async function removeApp(id) {
-      await deleteAppRecord(id);
-      refreshPublishedList();
-    }
-
-    async function refreshPublishedList() {
-      const apps = await getAllAppRecords();
-      apps.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
-      document.getElementById('appCount').textContent = apps.length;
-      const list = document.getElementById('publishedList');
-
-      if (apps.length === 0) {
-        list.innerHTML = `<p style="color: var(--text-muted); font-size: 0.88rem; margin-top: 12px;">No apps published yet.</p>`;
-        return;
+      if (confirm('Are you sure you want to delete this app from the cloud?')) {
+        await dbRef.child(id).remove();
+        refreshPublishedList();
       }
-
-      list.innerHTML = apps.map(app => `
-        <div class="published-item">
-          <div class="pub-left">
-            ${app.iconSrc ? `<img src="${app.iconSrc}" alt="${app.name}" />` : `<div style="width:46px;height:46px;border-radius:12px;background:#1e2536;"></div>`}
-            <div>
-              <strong style="font-size: 0.95rem;">${app.name}</strong>
-              <div style="font-size: 0.8rem; color: var(--text-muted);">${app.version} • ${app.fileName} (${app.sizeText}) • ${(app.screenshots || []).length} images</div>
-            </div>
-          </div>
-          <button class="btn-del" onclick="removeApp('${app.id}')">Delete</button>
-        </div>
-      `).join('');
     }
 
-    async function exportStandaloneStore() {
-      try {
-        const apps = await getAllAppRecords();
+    function refreshPublishedList() {
+      dbRef.on('value', (snapshot) => {
+        const data = snapshot.val();
+        const apps = data ? Object.values(data) : [];
+        apps.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+        document.getElementById('appCount').textContent = apps.length;
+        const list = document.getElementById('publishedList');
+
         if (apps.length === 0) {
-          showStatus('Publish at least one app before exporting!', true);
+          list.innerHTML = `<p style="color: var(--text-muted); font-size: 0.88rem; margin-top: 12px;">No apps published yet.</p>`;
           return;
         }
 
-        showStatus('Packaging all apps, local & external images, and APKs into index.html...');
-        const serializedApps = [];
-        for (const app of apps) {
-          const apkBase64 = app.apkBlob ? await fileToDataUrl(app.apkBlob) : app.apkBase64;
-          serializedApps.push({
-            id: app.id,
-            name: app.name,
-            version: app.version,
-            developer: app.developer,
-            description: app.description,
-            notes: app.notes,
-            fileName: app.fileName,
-            sizeText: app.sizeText,
-            iconSrc: app.iconSrc,
-            screenshots: app.screenshots,
-            apkBase64,
-            createdAt: app.createdAt
-          });
-        }
-
-        const res = await fetch('index.html');
-        if (!res.ok) throw new Error('Make sure index.html and admin.html are in the same folder.');
-        let html = await res.text();
-        html = html.replace(
-          /<script id="embeddedStoreData" type="application\/json">[\s\S]*?<\/script>/,
-          `<script id="embeddedStoreData" type="application/json">${JSON.stringify(serializedApps)}<\/script>`
-        );
-
-        const blob = new Blob([html], { type: 'text/html' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = 'index.html';
-        a.click();
-        URL.revokeObjectURL(url);
-
-        showStatus('Exported standalone index.html with all apps, images, and APKs inside!');
-      } catch (err) {
-        showStatus('Export info: ' + err.message, true);
-      }
+        list.innerHTML = apps.map(app => `
+          <div class="published-item">
+            <pub-left class="pub-left">
+              ${app.iconSrc ? `<img src="${app.iconSrc}" alt="${app.name}" />` : `<div style="width:46px;height:46px;border-radius:12px;background:#1e2536;"></div>`}
+              <div>
+                <strong style="font-size: 0.95rem;">${app.name}</strong>
+                <div style="font-size: 0.8rem; color: var(--text-muted);">${app.version} • ${app.fileName} (${app.sizeText}) • ${(app.screenshots || []).length} images</div>
+              </div>
+            </pub-left>
+            <button class="btn-del" onclick="removeApp('${app.id}')">Delete</button>
+          </div>
+        `).join('');
+      });
     }
   </script>
 </body>
