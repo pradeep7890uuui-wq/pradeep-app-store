@@ -6,13 +6,15 @@
   <title>Multi-App Publisher Console - Pradeep Apps</title>
   <style>
     :root {
-      --bg-dark: #0b0e14;
-      --card-dark: #151923;
-      --card-stroke: #262d3d;
+      --bg-deep: #05070c;
+      --surface: rgba(17, 22, 34, 0.82);
+      --surface-solid: #111622;
+      --border: rgba(255, 255, 255, 0.09);
       --accent-red: #ff3b5c;
       --accent-green: #00e676;
       --accent-blue: #2979ff;
-      --text-main: #f1f5f9;
+      --accent-cyan: #00e5ff;
+      --text-main: #f8fafc;
       --text-muted: #94a3b8;
     }
 
@@ -24,82 +26,135 @@
     }
 
     body {
-      background-color: var(--bg-dark);
+      background-color: var(--bg-deep);
       color: var(--text-main);
       min-height: 100vh;
+      overflow-x: hidden;
+      position: relative;
       display: flex;
       justify-content: center;
-      padding: 24px 16px;
+      padding: 24px 16px 48px;
     }
 
-    .container {
-      width: 100%;
-      max-width: 780px;
+    /* Animated Background (Matches index.html) */
+    .bg-graphics {
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      overflow: hidden;
+      background: radial-gradient(circle at 50% 0%, #0d1528 0%, #05070c 70%);
     }
+
+    .orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(85px);
+      opacity: 0.45;
+      animation: floatOrb 14s ease-in-out infinite alternate;
+    }
+
+    .orb-1 { width: 340px; height: 340px; background: var(--accent-blue); top: -80px; left: -60px; }
+    .orb-2 { width: 300px; height: 300px; background: var(--accent-red); bottom: 5%; right: -60px; animation-delay: -5s; }
+    .orb-3 { width: 240px; height: 240px; background: var(--accent-cyan); top: 45%; left: 40%; opacity: 0.2; animation-delay: -9s; }
+
+    .grid-overlay {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+      background-size: 42px 42px;
+      mask-image: radial-gradient(circle at center, black 40%, transparent 95%);
+    }
+
+    .container { width: 100%; max-width: 780px; }
 
     header {
       display: flex;
       justify-content: space-between;
       align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
       padding-bottom: 20px;
-      border-bottom: 1px solid var(--card-stroke);
+      border-bottom: 1px solid var(--border);
       margin-bottom: 24px;
     }
 
     header h1 {
-      font-size: 1.25rem;
+      font-size: 1.4rem;
+      font-weight: 900;
+      letter-spacing: 0.5px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
     }
 
     header h1 span {
-      color: var(--accent-red);
+      background: linear-gradient(90deg, var(--accent-red), #ff758c);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
 
     .back-link {
-      color: var(--accent-blue);
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--accent-cyan);
       text-decoration: none;
-      font-size: 0.9rem;
-      font-weight: 600;
+      font-size: 0.88rem;
+      font-weight: 700;
+      padding: 10px 16px;
+      border-radius: 14px;
+      backdrop-filter: blur(12px);
+      transition: 0.2s;
+    }
+
+    .back-link:hover {
+      border-color: var(--accent-cyan);
+      box-shadow: 0 0 16px rgba(0, 229, 255, 0.2);
     }
 
     .card {
-      background: var(--card-dark);
-      border: 1px solid var(--card-stroke);
-      border-radius: 18px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 22px;
       padding: 24px;
-      margin-bottom: 20px;
-      box-shadow: 0 10px 28px rgba(0, 0, 0, 0.4);
+      margin-bottom: 22px;
+      backdrop-filter: blur(14px);
+      box-shadow: 0 14px 36px rgba(0, 0, 0, 0.45);
     }
 
     .lock-screen {
       text-align: center;
-      padding: 40px 20px;
+      padding: 48px 20px;
+      max-width: 520px;
+      margin: 40px auto;
     }
 
     .pin-row {
       display: flex;
       justify-content: center;
       gap: 10px;
-      margin-top: 16px;
+      margin-top: 18px;
     }
 
     input, textarea {
       width: 100%;
-      background: #0e1118;
-      border: 1px solid var(--card-stroke);
+      background: rgba(10, 14, 23, 0.85);
+      border: 1px solid var(--border);
       color: var(--text-main);
       padding: 11px 14px;
-      border-radius: 10px;
+      border-radius: 12px;
       font-size: 0.95rem;
       outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
     }
 
     input:focus, textarea:focus {
-      border-color: var(--accent-blue);
+      border-color: var(--accent-cyan);
+      box-shadow: 0 0 0 3px rgba(0, 229, 255, 0.14);
     }
 
-    .form-group {
-      margin-bottom: 16px;
-    }
+    .form-group { margin-bottom: 16px; }
 
     label {
       display: block;
@@ -109,9 +164,9 @@
     }
 
     .box-panel {
-      border: 1px solid var(--card-stroke);
-      background: #10141d;
-      border-radius: 14px;
+      border: 1px solid var(--border);
+      background: rgba(10, 14, 23, 0.72);
+      border-radius: 16px;
       padding: 16px;
       margin-bottom: 16px;
       display: flex;
@@ -120,9 +175,9 @@
     }
 
     .drop-zone {
-      border: 2px dashed var(--card-stroke);
-      background: #0c0f16;
-      border-radius: 12px;
+      border: 2px dashed var(--border);
+      background: rgba(5, 7, 12, 0.55);
+      border-radius: 14px;
       padding: 18px 12px;
       text-align: center;
       cursor: pointer;
@@ -135,40 +190,25 @@
     }
 
     .drop-zone:hover {
-      border-color: var(--accent-blue);
-      background: rgba(41, 121, 255, 0.06);
+      border-color: var(--accent-cyan);
+      background: rgba(0, 229, 255, 0.06);
     }
 
-    .drop-zone strong {
-      font-size: 0.92rem;
-      margin-bottom: 4px;
-    }
-
-    .drop-zone span {
-      font-size: 0.78rem;
-      color: var(--text-muted);
-    }
-
-    .url-row {
-      display: flex;
-      gap: 8px;
-    }
+    .url-row { display: flex; gap: 8px; }
 
     .btn-small {
-      background: #1f2636;
+      background: rgba(25, 33, 52, 0.9);
       color: var(--text-main);
-      border: 1px solid var(--card-stroke);
+      border: 1px solid var(--border);
       padding: 0 14px;
-      border-radius: 10px;
+      border-radius: 12px;
       cursor: pointer;
       font-weight: 600;
       font-size: 0.84rem;
       white-space: nowrap;
     }
 
-    .btn-small:hover {
-      border-color: var(--accent-blue);
-    }
+    .btn-small:hover { border-color: var(--accent-cyan); color: var(--accent-cyan); }
 
     .preview-icon {
       width: 64px;
@@ -186,15 +226,12 @@
       margin-top: 8px;
     }
 
-    .ss-thumb-wrap {
-      position: relative;
-      display: inline-block;
-    }
+    .ss-thumb-wrap { position: relative; display: inline-block; }
 
     .ss-thumb-wrap img {
       height: 78px;
-      border-radius: 8px;
-      border: 1px solid var(--card-stroke);
+      border-radius: 10px;
+      border: 1px solid var(--border);
       display: block;
     }
 
@@ -211,7 +248,6 @@
       font-size: 0.75rem;
       font-weight: bold;
       cursor: pointer;
-      line-height: 1;
     }
 
     .grid-2 {
@@ -228,23 +264,24 @@
       width: 100%;
       padding: 13px;
       border: none;
-      border-radius: 12px;
+      border-radius: 13px;
       font-size: 0.98rem;
-      font-weight: 700;
+      font-weight: 800;
       cursor: pointer;
       margin-top: 8px;
-      transition: 0.15s;
+      transition: transform 0.2s, box-shadow 0.2s;
     }
 
-    .btn-primary { background: var(--accent-blue); color: #fff; }
-    .btn-green { background: var(--accent-green); color: #05130a; }
-    .btn-green:hover { box-shadow: 0 6px 20px rgba(0, 230, 118, 0.35); }
+    .btn-primary { background: linear-gradient(135deg, var(--accent-blue), #1e62d0); color: #fff; }
+    .btn-green { background: linear-gradient(135deg, var(--accent-green), #00c853); color: #031409; }
+    .btn-green:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0, 230, 118, 0.35); }
+    .btn-cyan { background: linear-gradient(135deg, var(--accent-cyan), #00b0ff); color: #031409; }
 
     /* Green Loading Progress Bar */
     .progress-wrapper {
       margin-top: 14px;
-      background: #0c0f16;
-      border: 1px solid var(--card-stroke);
+      background: rgba(5, 7, 12, 0.75);
+      border: 1px solid rgba(0, 230, 118, 0.35);
       border-radius: 12px;
       padding: 12px;
       display: none;
@@ -261,8 +298,8 @@
 
     .progress-track {
       width: 100%;
-      height: 12px;
-      background: #1a202c;
+      height: 10px;
+      background: rgba(255, 255, 255, 0.1);
       border-radius: 999px;
       overflow: hidden;
     }
@@ -272,7 +309,7 @@
       width: 0%;
       background: linear-gradient(90deg, #00c853, var(--accent-green));
       border-radius: 999px;
-      transition: width 0.25s ease;
+      transition: width 0.2s ease;
       box-shadow: 0 0 10px rgba(0, 230, 118, 0.5);
     }
 
@@ -280,24 +317,20 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 12px;
-      background: #10141d;
-      border: 1px solid var(--card-stroke);
-      border-radius: 12px;
+      padding: 12px 14px;
+      background: rgba(10, 14, 23, 0.75);
+      border: 1px solid var(--border);
+      border-radius: 14px;
       margin-top: 10px;
       gap: 12px;
     }
 
-    .pub-left {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
+    .pub-left { display: flex; align-items: center; gap: 12px; }
 
     .pub-left img {
       width: 46px;
       height: 46px;
-      border-radius: 10px;
+      border-radius: 12px;
       object-fit: cover;
       background: #1a202c;
     }
@@ -306,17 +339,17 @@
       background: rgba(255, 59, 92, 0.15);
       color: var(--accent-red);
       border: 1px solid rgba(255, 59, 92, 0.4);
-      padding: 6px 12px;
-      border-radius: 8px;
+      padding: 7px 14px;
+      border-radius: 10px;
       cursor: pointer;
-      font-weight: 600;
+      font-weight: 700;
       font-size: 0.82rem;
     }
 
     .status {
       margin-top: 12px;
       padding: 12px;
-      border-radius: 10px;
+      border-radius: 12px;
       font-size: 0.88rem;
       display: none;
     }
@@ -336,6 +369,11 @@
     }
 
     .hidden { display: none; }
+
+    @keyframes floatOrb {
+      0% { transform: translate(0, 0) scale(1); }
+      100% { transform: translate(35px, 25px) scale(1.12); }
+    }
   </style>
 
   <!-- Firebase SDKs -->
@@ -343,9 +381,19 @@
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 </head>
 <body>
+  <div class="bg-graphics">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+    <div class="grid-overlay"></div>
+  </div>
+
   <div class="container">
     <header>
-      <h1>MULTI-APP <span>PUBLISHER</span></h1>
+      <h1>
+        <div style="width:10px;height:10px;border-radius:50%;background:var(--accent-green);box-shadow:0 0 12px var(--accent-green);"></div>
+        MULTI-APP <span>PUBLISHER</span>
+      </h1>
       <a href="index.html" class="back-link" target="_blank">Open App Store Website &rarr;</a>
     </header>
 
@@ -363,51 +411,52 @@
     <!-- Main Publisher Panel -->
     <div id="publisherArea" class="hidden">
       <div class="card">
-        <h2 style="font-size: 1.15rem; margin-bottom: 16px;">Add / Publish New App</h2>
+        <h2 style="font-size: 1.15rem; margin-bottom: 16px;">Publish App & Test Cloud</h2>
 
-        <!-- 1. APK Direct URL Box -->
-        <div class="box-panel">
-          <label style="color: var(--text-main); font-weight: 600; margin-bottom: 0;">1. APK Direct Download URL (GitHub Raw Link)</label>
-          <span style="font-size: 0.78rem; color: var(--text-muted);">Paste the direct .apk link from your GitHub repository so it publishes immediately without hanging.</span>
-          <input type="url" id="inputApkUrl" placeholder="https://raw.githubusercontent.com/.../your-app.apk" oninput="onApkUrlInput()" />
-          <div class="grid-2" style="margin-top: 4px;">
-            <div>
-              <label>APK File Name</label>
-              <input type="text" id="inputFileName" placeholder="e.g. app.apk" />
-            </div>
-            <div>
-              <label>File Size</label>
-              <input type="text" id="inputSizeText" placeholder="e.g. 12 MB" value="10 MB" />
-            </div>
-          </div>
+        <!-- Test Cloud Connection Button -->
+        <div style="margin-bottom: 18px;">
+          <button type="button" class="btn btn-cyan" onclick="sendTestPing()">⚡ Test Cloud Connection (Ping Index)</button>
+          <div id="testPingStatus" style="font-size: 0.82rem; margin-top: 6px; color: var(--accent-cyan);"></div>
         </div>
 
-        <!-- 2. App Icon Input -->
+        <!-- APK Option 1: Direct Download URL (Recommended for heavy files) -->
         <div class="box-panel">
-          <label style="color: var(--text-main); font-weight: 600; margin-bottom: 0;">2. App Icon (Local File or External URL)</label>
-          <div class="drop-zone" onclick="document.getElementById('iconInput').click()">
-            <strong>Click to pick PNG/JPG/WEBP icon</strong>
-            <span>Or paste an image URL below</span>
+          <label style="color: var(--text-main); font-weight: 600;">Option A: APK Direct Download URL (GitHub Raw Link)</label>
+          <input type="url" id="inputApkUrl" placeholder="https://raw.githubusercontent.com/.../app.apk" oninput="onApkUrlInput()" />
+        </div>
+
+        <!-- APK Option 2: Direct File Drop Zone -->
+        <div class="box-panel">
+          <label style="color: var(--text-main); font-weight: 600;">Option B: Upload Local APK File (.apk)</label>
+          <div class="drop-zone" onclick="document.getElementById('apkInput').click()">
+            <strong>Click or Drop your .apk file here</strong>
+            <span id="apkLabel" style="color: var(--accent-green); font-weight: 600; margin-top: 4px;"></span>
+          </div>
+          <input type="file" id="apkInput" accept=".apk,application/vnd.android.package-archive" class="hidden" onchange="onApkFileSelected(event)" />
+        </div>
+
+        <!-- App Icon Input -->
+        <div class="box-panel">
+          <label style="color: var(--text-main); font-weight: 600;">App Icon (File or URL)</label>
+          <div class="drop-zone" style="min-height: 70px;" onclick="document.getElementById('iconInput').click()">
+            <span>Click to pick Icon image file</span>
             <img id="iconPreview" class="preview-icon hidden" alt="Icon Preview" />
           </div>
           <input type="file" id="iconInput" accept="image/*" class="hidden" onchange="onIconFileSelected(event)" />
-          <input type="url" id="iconUrlInput" placeholder="Paste external icon image URL..." oninput="onIconUrlChanged()" />
+          <input type="url" id="iconUrlInput" placeholder="Or paste external icon URL..." oninput="onIconUrlChanged()" />
         </div>
 
-        <!-- 3. App Screenshots / Images -->
+        <!-- App Screenshots / Images -->
         <div class="box-panel">
-          <label style="color: var(--text-main); font-weight: 600; margin-bottom: 0;">3. App Images / Screenshots</label>
-          <div class="drop-zone" style="min-height: 75px;" onclick="document.getElementById('ssInput').click()">
-            <strong>+ Click to Add Local Images (Select 1 or Many)</strong>
-            <span>Supports PNG, JPG, WEBP, GIF</span>
+          <label style="color: var(--text-main); font-weight: 600;">App Screenshots / Images</label>
+          <div class="drop-zone" style="min-height: 65px;" onclick="document.getElementById('ssInput').click()">
+            <span>+ Click to add images</span>
           </div>
           <input type="file" id="ssInput" accept="image/*" multiple class="hidden" onchange="onScreenshotsFileSelected(event)" />
-
-          <div class="url-row">
-            <input type="url" id="ssUrlInput" placeholder="Paste external image URL (https://...) and click Add URL" />
+          <div class="url-row" style="margin-top: 6px;">
+            <input type="url" id="ssUrlInput" placeholder="Paste external image URL..." />
             <button type="button" class="btn-small" onclick="addExternalScreenshotUrl()">+ Add URL</button>
           </div>
-
           <div id="ssPreviewList" class="ss-preview-list"></div>
         </div>
 
@@ -437,7 +486,7 @@
           <input type="text" id="inputNotes" value="Initial official release." />
         </div>
 
-        <button class="btn btn-green" id="publishBtn" onclick="publishApp()">+ Publish App to Website</button>
+        <button class="btn btn-green" id="publishBtn" onclick="publishApp()">+ Publish App Instantly</button>
 
         <!-- Green Loading Progress Bar with Percentage -->
         <div id="pubProgressWrap" class="progress-wrapper">
@@ -455,7 +504,7 @@
 
       <!-- Published Apps Manager -->
       <div class="card">
-        <h2 style="font-size: 1.1rem;">Published Apps (<span id="appCount">0</span>)</h2>
+        <h2 style="font-size: 1.1rem;">Cloud Published Apps (<span id="appCount">0</span>)</h2>
         <div id="publishedList"></div>
       </div>
     </div>
@@ -476,7 +525,9 @@
 
     firebase.initializeApp(firebaseConfig);
     const dbRef = firebase.database().ref('apps');
+    const testPingRef = firebase.database().ref('testPing');
 
+    let selectedApkFile = null;
     let selectedIconSrc = '';
     let selectedScreenshots = [];
 
@@ -494,6 +545,20 @@
       if (e.key === 'Enter') unlock();
     });
 
+    async function sendTestPing() {
+      const statusEl = document.getElementById('testPingStatus');
+      statusEl.textContent = 'Sending test ping to index...';
+      try {
+        await testPingRef.set({
+          message: "Test Success! Cloud is live and connected.",
+          timestamp: Date.now()
+        });
+        statusEl.textContent = '✅ Test Ping sent successfully! Check your index.html page.';
+      } catch (err) {
+        statusEl.textContent = '❌ Error sending ping: ' + err.message;
+      }
+    }
+
     function onApkUrlInput() {
       const url = document.getElementById('inputApkUrl').value.trim();
       if (!url) return;
@@ -501,14 +566,36 @@
         const parts = url.split('/');
         const lastPart = parts[parts.length - 1].split('?')[0];
         if (lastPart && lastPart.toLowerCase().endsWith('.apk')) {
-          if (!document.getElementById('inputFileName').value.trim()) {
-            document.getElementById('inputFileName').value = decodeURIComponent(lastPart);
-          }
           if (!document.getElementById('inputName').value.trim()) {
             document.getElementById('inputName').value = decodeURIComponent(lastPart).replace(/\.apk$/i, '').replace(/[_-]+/g, ' ');
           }
         }
       } catch (_) {}
+    }
+
+    function formatBytes(bytes) {
+      if (!bytes) return '0 MB';
+      const mb = bytes / (1024 * 1024);
+      return mb >= 1 ? mb.toFixed(2) + ' MB' : (bytes / 1024).toFixed(1) + ' KB';
+    }
+
+    function onApkFileSelected(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+      selectedApkFile = file;
+      document.getElementById('apkLabel').textContent = `${file.name} (${formatBytes(file.size)})`;
+      if (!document.getElementById('inputName').value.trim()) {
+        document.getElementById('inputName').value = file.name.replace(/\.apk$/i, '').replace(/[_-]+/g, ' ');
+      }
+    }
+
+    function fileToDataUrl(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = () => reject(reader.error);
+        reader.readAsDataURL(file);
+      });
     }
 
     function compressImageFile(file, maxWidth = 800, quality = 0.78) {
@@ -579,13 +666,6 @@
       renderScreenshotPreviews();
     }
 
-    document.getElementById('ssUrlInput').addEventListener('keypress', e => {
-      if (e.key === 'Enter') {
-        e.preventDefault();
-        addExternalScreenshotUrl();
-      }
-    });
-
     function removeScreenshotAt(idx) {
       selectedScreenshots.splice(idx, 1);
       renderScreenshotPreviews();
@@ -596,7 +676,7 @@
       container.innerHTML = selectedScreenshots.map((src, i) => `
         <div class="ss-thumb-wrap">
           <img src="${src}" alt="Image ${i + 1}" />
-          <button type="button" class="ss-remove-btn" onclick="removeScreenshotAt(${i})" title="Remove">&times;</button>
+          <button type="button" class="ss-remove-btn" onclick="removeScreenshotAt(${i})">&times;</button>
         </div>
       `).join('');
     }
@@ -619,14 +699,14 @@
 
     async function publishApp() {
       const name = document.getElementById('inputName').value.trim();
-      const apkUrl = document.getElementById('inputApkUrl').value.trim();
+      const apkUrlInput = document.getElementById('inputApkUrl').value.trim();
 
-      if (!apkUrl) {
-        showStatus('Please enter the APK Direct Download URL first!', true);
-        return;
-      }
       if (!name) {
         showStatus('Please enter the App Name!', true);
+        return;
+      }
+      if (!apkUrlInput && !selectedApkFile) {
+        showStatus('Please provide an APK URL or upload an APK file!', true);
         return;
       }
 
@@ -634,16 +714,24 @@
       const btn = document.getElementById('publishBtn');
       btn.disabled = true;
 
-      let currentPct = 10;
-      updateProgress(currentPct, 'Preparing app details...');
+      updateProgress(15, 'Preparing package...');
 
-      const progressTimer = setInterval(() => {
-        if (currentPct < 88) {
-          currentPct += Math.floor(Math.random() * 12) + 5;
-          if (currentPct > 88) currentPct = 88;
-          updateProgress(currentPct, 'Syncing to Firebase Cloud...');
-        }
-      }, 150);
+      let finalApkUrl = apkUrlInput;
+      let fileName = 'app.apk';
+      let sizeText = '10 MB';
+
+      if (selectedApkFile) {
+        updateProgress(40, 'Encoding local APK file...');
+        finalApkUrl = await fileToDataUrl(selectedApkFile);
+        fileName = selectedApkFile.name;
+        sizeText = formatBytes(selectedApkFile.size);
+      } else if (apkUrlInput) {
+        const parts = apkUrlInput.split('/');
+        const lastPart = parts[parts.length - 1].split('?')[0];
+        if (lastPart) fileName = decodeURIComponent(lastPart);
+      }
+
+      updateProgress(75, 'Syncing to Firebase Cloud...');
 
       const appId = 'app_' + Date.now();
       const record = {
@@ -653,9 +741,9 @@
         developer: document.getElementById('inputDev').value.trim() || 'Pradeep King',
         description: document.getElementById('inputDesc').value.trim(),
         notes: document.getElementById('inputNotes').value.trim(),
-        fileName: document.getElementById('inputFileName').value.trim() || `${name}.apk`,
-        sizeText: document.getElementById('inputSizeText').value.trim() || '10 MB',
-        apkUrl: apkUrl,
+        fileName,
+        sizeText,
+        apkUrl: finalApkUrl,
         iconSrc: selectedIconSrc,
         screenshots: [...selectedScreenshots],
         createdAt: Date.now()
@@ -663,14 +751,14 @@
 
       try {
         await dbRef.child(appId).set(record);
-        clearInterval(progressTimer);
-        updateProgress(100, 'Completed!');
-        showStatus(`"${name}" published (100% Completed)! It is now live on index.html.`);
+        updateProgress(100, 'Published Successfully!');
+        showStatus(`"${name}" published successfully! Live on index.html.`);
 
+        selectedApkFile = null;
         selectedIconSrc = '';
         selectedScreenshots = [];
         document.getElementById('inputApkUrl').value = '';
-        document.getElementById('inputFileName').value = '';
+        document.getElementById('apkLabel').textContent = '';
         document.getElementById('iconInput').value = '';
         document.getElementById('iconUrlInput').value = '';
         document.getElementById('ssInput').value = '';
@@ -680,20 +768,20 @@
         document.getElementById('inputName').value = '';
         document.getElementById('inputDesc').value = '';
 
+        refreshPublishedList();
         setTimeout(() => {
           document.getElementById('pubProgressWrap').style.display = 'none';
-        }, 2500);
+        }, 3000);
       } catch (err) {
-        clearInterval(progressTimer);
         document.getElementById('pubProgressWrap').style.display = 'none';
-        showStatus('Failed to publish app: ' + err.message, true);
+        showStatus('Failed to publish: ' + err.message, true);
       } finally {
         btn.disabled = false;
       }
     }
 
     async function removeApp(id) {
-      if (confirm('Delete this app from your store?')) {
+      if (confirm('Delete this app?')) {
         await dbRef.child(id).remove();
       }
     }
@@ -717,7 +805,7 @@
               ${app.iconSrc ? `<img src="${app.iconSrc}" alt="${app.name}" />` : `<div style="width:46px;height:46px;border-radius:10px;background:#1e2536;"></div>`}
               <div>
                 <strong style="font-size: 0.95rem;">${app.name}</strong>
-                <div style="font-size: 0.8rem; color: var(--text-muted);">${app.version} • ${app.fileName} (${app.sizeText}) • ${(app.screenshots || []).length} images</div>
+                <div style="font-size: 0.8rem; color: var(--text-muted);">${app.version} • ${app.fileName} (${app.sizeText})</div>
               </div>
             </div>
             <button class="btn-del" onclick="removeApp('${app.id}')">Delete</button>
