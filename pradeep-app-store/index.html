@@ -133,6 +133,22 @@
       box-shadow: 0 0 0 3px rgba(0, 229, 255, 0.16);
     }
 
+    /* Small Live Test Notification Box */
+    #liveTestAlert {
+      background: rgba(0, 230, 118, 0.12);
+      border: 1px solid rgba(0, 230, 118, 0.4);
+      color: var(--accent-green);
+      padding: 12px 18px;
+      border-radius: 14px;
+      margin-bottom: 20px;
+      font-size: 0.9rem;
+      font-weight: 700;
+      display: none;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0 8px 24px rgba(0, 230, 118, 0.15);
+    }
+
     .dev-card {
       background: linear-gradient(135deg, rgba(20, 27, 45, 0.88), rgba(12, 16, 26, 0.92));
       border: 1px solid var(--border);
@@ -270,7 +286,7 @@
       cursor: pointer;
     }
 
-    /* Green Download Progress Bar */
+    /* Download Progress Bar */
     .dl-progress-box {
       margin-bottom: 12px;
       background: rgba(5, 7, 12, 0.75);
@@ -303,7 +319,6 @@
       background: linear-gradient(90deg, #00c853, var(--accent-green));
       border-radius: 999px;
       transition: width 0.15s ease;
-      box-shadow: 0 0 8px rgba(0, 230, 118, 0.5);
     }
 
     .card-actions {
@@ -324,11 +339,9 @@
       text-decoration: none;
       cursor: pointer;
       border: none;
-      transition: 0.2s;
     }
 
     .btn-download:hover { box-shadow: 0 6px 16px rgba(0, 230, 118, 0.35); }
-    .btn-download:disabled { opacity: 0.7; cursor: wait; }
 
     .btn-details {
       background: rgba(255, 255, 255, 0.06);
@@ -339,7 +352,6 @@
       padding: 10px 14px;
       border-radius: 12px;
       cursor: pointer;
-      transition: 0.2s;
     }
 
     .btn-details:hover { border-color: var(--accent-cyan); color: var(--accent-cyan); }
@@ -367,7 +379,6 @@
       overflow-y: auto;
       padding: 24px;
       position: relative;
-      box-shadow: 0 25px 60px rgba(0,0,0,0.8);
     }
 
     .modal-close {
@@ -382,9 +393,6 @@
       border-radius: 50%;
       font-weight: bold;
       cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
     }
 
     .modal-header {
@@ -417,7 +425,6 @@
       border-radius: 12px;
       border: 1px solid var(--border);
       object-fit: cover;
-      cursor: pointer;
     }
 
     .modal-section-title {
@@ -484,6 +491,11 @@
       </div>
     </header>
 
+    <!-- Small Live Test Notification Box -->
+    <div id="liveTestAlert">
+      <span>⚡</span> <span id="liveTestText">Connected to cloud successfully!</span>
+    </div>
+
     <section class="dev-card">
       <div class="dev-avatar">P</div>
       <div class="dev-text">
@@ -522,8 +534,22 @@
 
     firebase.initializeApp(firebaseConfig);
     const dbRef = firebase.database().ref('apps');
+    const testPingRef = firebase.database().ref('testPing');
 
     let appsList = [];
+
+    // Listen for real-time Test Pings from admin
+    testPingRef.on('value', (snapshot) => {
+      const val = snapshot.val();
+      if (val && val.message) {
+        const alertBox = document.getElementById('liveTestAlert');
+        document.getElementById('liveTestText').textContent = val.message + ` (${new Date(val.timestamp).toLocaleTimeString()})`;
+        alertBox.style.display = 'flex';
+        setTimeout(() => {
+          alertBox.style.display = 'none';
+        }, 8000);
+      }
+    });
 
     function loadStoreApps() {
       dbRef.on('value', (snapshot) => {
@@ -534,8 +560,6 @@
           appsList = [];
         }
         renderApps();
-      }, (error) => {
-        console.error("Error loading apps:", error);
       });
     }
 
@@ -557,17 +581,16 @@
     async function downloadApp(appId) {
       const app = appsList.find(a => a.id === appId);
       if (!app) return;
-      const href = app.apkUrl || app.apkBase64 || '';
+      const href = app.apkUrl || '';
       if (!href) { alert('APK link not found.'); return; }
 
       const fileName = app.fileName || `${app.name}.apk`;
 
-      // If it's a direct HTTP URL, fetch with real-time progress tracking
       if (href.startsWith('http')) {
         try {
           updateDownloadUI(appId, 0, 'Connecting...');
           const response = await fetch(href);
-          if (!response.ok) throw new Error('Network response failed');
+          if (!response.ok) throw new Error('Network failed');
 
           const contentLength = response.headers.get('content-length');
           const total = contentLength ? parseInt(contentLength, 10) : 0;
@@ -586,8 +609,7 @@
               const pct = Math.min(99, Math.round((loaded / total) * 100));
               updateDownloadUI(appId, pct, 'Downloading APK...');
             } else {
-              const mbLoaded = (loaded / (1024 * 1024)).toFixed(1);
-              updateDownloadUI(appId, 50, `Downloaded ${mbLoaded} MB...`);
+              updateDownloadUI(appId, 50, `Downloaded ${(loaded/(1024*1024)).toFixed(1)} MB...`);
             }
           }
 
@@ -604,11 +626,10 @@
 
           setTimeout(() => {
             URL.revokeObjectURL(blobUrl);
-            updateDownloadUI(appId, 100, '100% Completed!', false);
-          }, 4000);
+            updateDownloadUI(appId, 100, 'Completed', false);
+          }, 3500);
         } catch (err) {
-          // Fallback to direct browser download if CORS blocks fetch streaming
-          updateDownloadUI(appId, 100, 'Starting direct download...');
+          updateDownloadUI(appId, 100, 'Opening direct download...');
           const a = document.createElement('a');
           a.href = href;
           a.download = fileName;
