@@ -1,29 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Multi-App Publisher Console - Pradeep Apps</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pradeep Apps - Official App &amp; Web Store</title>
   <style>
     :root {
       --bg-deep: #05070c;
       --surface: rgba(17, 22, 34, 0.82);
-      --surface-solid: #111622;
       --border: rgba(255, 255, 255, 0.09);
       --accent-red: #ff3b5c;
-      --accent-green: #00e676;
       --accent-blue: #2979ff;
       --accent-cyan: #00e5ff;
+      --accent-green: #00e676;
       --text-main: #f8fafc;
       --text-muted: #94a3b8;
     }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Roboto, sans-serif; }
 
     body {
       background-color: var(--bg-deep);
@@ -31,788 +25,117 @@
       min-height: 100vh;
       overflow-x: hidden;
       position: relative;
-      display: flex;
-      justify-content: center;
-      padding: 24px 16px 48px;
     }
 
-    /* Animated Background (Matches index.html) */
     .bg-graphics {
-      position: fixed;
-      inset: 0;
-      z-index: -1;
-      overflow: hidden;
+      position: fixed; inset: 0; z-index: -1;
       background: radial-gradient(circle at 50% 0%, #0d1528 0%, #05070c 70%);
     }
 
-    .orb {
-      position: absolute;
-      border-radius: 50%;
-      filter: blur(85px);
-      opacity: 0.45;
-      animation: floatOrb 14s ease-in-out infinite alternate;
-    }
-
-    .orb-1 { width: 340px; height: 340px; background: var(--accent-blue); top: -80px; left: -60px; }
-    .orb-2 { width: 300px; height: 300px; background: var(--accent-red); bottom: 5%; right: -60px; animation-delay: -5s; }
-    .orb-3 { width: 240px; height: 240px; background: var(--accent-cyan); top: 45%; left: 40%; opacity: 0.2; animation-delay: -9s; }
-
-    .grid-overlay {
-      position: absolute;
-      inset: 0;
-      background-image:
-        linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
-      background-size: 42px 42px;
-      mask-image: radial-gradient(circle at center, black 40%, transparent 95%);
-    }
-
-    .container { width: 100%; max-width: 780px; }
+    .container { width: 100%; max-width: 1200px; margin: 0 auto; padding: 24px 16px 48px; }
 
     header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 14px;
-      flex-wrap: wrap;
-      padding-bottom: 20px;
-      border-bottom: 1px solid var(--border);
-      margin-bottom: 24px;
+      display: flex; justify-content: space-between; align-items: center;
+      gap: 14px; flex-wrap: wrap; padding-bottom: 20px; border-bottom: 1px solid var(--border); margin-bottom: 24px;
     }
 
-    header h1 {
-      font-size: 1.4rem;
-      font-weight: 900;
-      letter-spacing: 0.5px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
+    .brand { font-size: 1.5rem; font-weight: 900; display: flex; align-items: center; gap: 10px; }
+    .brand span { color: var(--accent-red); }
+
+    .search-box {
+      width: 100%; max-width: 320px; background: var(--surface); border: 1px solid var(--border);
+      color: var(--text-main); padding: 11px 16px; border-radius: 14px; font-size: 0.94rem; outline: none;
     }
 
-    header h1 span {
-      background: linear-gradient(90deg, var(--accent-red), #ff758c);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+    .apps-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px;
     }
 
-    .back-link {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      color: var(--accent-cyan);
-      text-decoration: none;
-      font-size: 0.88rem;
-      font-weight: 700;
-      padding: 10px 16px;
-      border-radius: 14px;
-      backdrop-filter: blur(12px);
-      transition: 0.2s;
+    .app-card {
+      background: var(--surface); border: 1px solid var(--border); border-radius: 22px;
+      padding: 22px; display: flex; flex-direction: column; backdrop-filter: blur(12px);
+      transition: transform 0.3s ease, border-color 0.3s;
     }
 
-    .back-link:hover {
-      border-color: var(--accent-cyan);
-      box-shadow: 0 0 16px rgba(0, 229, 255, 0.2);
+    .app-card:hover { transform: translateY(-4px); border-color: var(--accent-cyan); }
+
+    .app-card-top { display: flex; gap: 14px; margin-bottom: 14px; }
+
+    .app-icon {
+      width: 68px; height: 68px; border-radius: 16px; background: #121a2e;
+      border: 1px solid var(--border); display: flex; align-items: center; justify-content: center;
+      font-size: 1.5rem; font-weight: 900; color: var(--accent-cyan); overflow: hidden;
+    }
+    .app-icon img { width: 100%; height: 100%; object-fit: cover; }
+
+    .app-title-area h3 { font-size: 1.05font; font-weight: 700; margin-bottom: 2px; }
+    .app-title-area p { font-size: 0.82rem; color: var(--accent-blue); font-weight: 600; }
+
+    .btn-download {
+      width: 100%; background: linear-gradient(135deg, var(--accent-green), #00c853);
+      color: #031409; font-weight: 800; font-size: 0.88rem; padding: 11px;
+      border-radius: 12px; text-align: center; text-decoration: none; display: block; border: none; cursor: pointer;
     }
 
-    .card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 22px;
-      padding: 24px;
-      margin-bottom: 22px;
-      backdrop-filter: blur(14px);
-      box-shadow: 0 14px 36px rgba(0, 0, 0, 0.45);
-    }
-
-    .lock-screen {
-      text-align: center;
-      padding: 48px 20px;
-      max-width: 520px;
-      margin: 40px auto;
-    }
-
-    .pin-row {
-      display: flex;
-      justify-content: center;
-      gap: 10px;
-      margin-top: 18px;
-    }
-
-    input, textarea {
-      width: 100%;
-      background: rgba(10, 14, 23, 0.85);
-      border: 1px solid var(--border);
-      color: var(--text-main);
-      padding: 11px 14px;
-      border-radius: 12px;
-      font-size: 0.95rem;
-      outline: none;
-      transition: border-color 0.2s, box-shadow 0.2s;
-    }
-
-    input:focus, textarea:focus {
-      border-color: var(--accent-cyan);
-      box-shadow: 0 0 0 3px rgba(0, 229, 255, 0.14);
-    }
-
-    .form-group { margin-bottom: 16px; }
-
-    label {
-      display: block;
-      font-size: 0.85rem;
-      color: var(--text-muted);
-      margin-bottom: 6px;
-    }
-
-    .box-panel {
-      border: 1px solid var(--border);
-      background: rgba(10, 14, 23, 0.72);
-      border-radius: 16px;
-      padding: 16px;
-      margin-bottom: 16px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    .drop-zone {
-      border: 2px dashed var(--border);
-      background: rgba(5, 7, 12, 0.55);
-      border-radius: 14px;
-      padding: 18px 12px;
-      text-align: center;
-      cursor: pointer;
-      transition: 0.2s;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      min-height: 90px;
-    }
-
-    .drop-zone:hover {
-      border-color: var(--accent-cyan);
-      background: rgba(0, 229, 255, 0.06);
-    }
-
-    .url-row { display: flex; gap: 8px; }
-
-    .btn-small {
-      background: rgba(25, 33, 52, 0.9);
-      color: var(--text-main);
-      border: 1px solid var(--border);
-      padding: 0 14px;
-      border-radius: 12px;
-      cursor: pointer;
-      font-weight: 600;
-      font-size: 0.84rem;
-      white-space: nowrap;
-    }
-
-    .btn-small:hover { border-color: var(--accent-cyan); color: var(--accent-cyan); }
-
-    .preview-icon {
-      width: 64px;
-      height: 64px;
-      border-radius: 14px;
-      object-fit: cover;
-      margin-top: 8px;
-      border: 1px solid var(--accent-green);
-    }
-
-    .ss-preview-list {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      margin-top: 8px;
-    }
-
-    .ss-thumb-wrap { position: relative; display: inline-block; }
-
-    .ss-thumb-wrap img {
-      height: 78px;
-      border-radius: 10px;
-      border: 1px solid var(--border);
-      display: block;
-    }
-
-    .ss-remove-btn {
-      position: absolute;
-      top: -6px;
-      right: -6px;
-      background: var(--accent-red);
-      color: #fff;
-      border: none;
-      width: 20px;
-      height: 20px;
-      border-radius: 50%;
-      font-size: 0.75rem;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    .grid-2 {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-    }
-
-    @media (max-width: 540px) {
-      .grid-2 { grid-template-columns: 1fr; }
-    }
-
-    .btn {
-      width: 100%;
-      padding: 13px;
-      border: none;
-      border-radius: 13px;
-      font-size: 0.98rem;
-      font-weight: 800;
-      cursor: pointer;
-      margin-top: 8px;
-      transition: transform 0.2s, box-shadow 0.2s;
-    }
-
-    .btn-primary { background: linear-gradient(135deg, var(--accent-blue), #1e62d0); color: #fff; }
-    .btn-green { background: linear-gradient(135deg, var(--accent-green), #00c853); color: #031409; }
-    .btn-green:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0, 230, 118, 0.35); }
-    .btn-cyan { background: linear-gradient(135deg, var(--accent-cyan), #00b0ff); color: #031409; }
-
-    /* Green Loading Progress Bar */
-    .progress-wrapper {
-      margin-top: 14px;
-      background: rgba(5, 7, 12, 0.75);
-      border: 1px solid rgba(0, 230, 118, 0.35);
-      border-radius: 12px;
-      padding: 12px;
-      display: none;
-    }
-
-    .progress-header {
-      display: flex;
-      justify-content: space-between;
-      font-size: 0.85rem;
-      font-weight: 700;
-      margin-bottom: 8px;
-      color: var(--accent-green);
-    }
-
-    .progress-track {
-      width: 100%;
-      height: 10px;
-      background: rgba(255, 255, 255, 0.1);
-      border-radius: 999px;
-      overflow: hidden;
-    }
-
-    .progress-fill {
-      height: 100%;
-      width: 0%;
-      background: linear-gradient(90deg, #00c853, var(--accent-green));
-      border-radius: 999px;
-      transition: width 0.2s ease;
-      box-shadow: 0 0 10px rgba(0, 230, 118, 0.5);
-    }
-
-    .published-item {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 12px 14px;
-      background: rgba(10, 14, 23, 0.75);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      margin-top: 10px;
-      gap: 12px;
-    }
-
-    .pub-left { display: flex; align-items: center; gap: 12px; }
-
-    .pub-left img {
-      width: 46px;
-      height: 46px;
-      border-radius: 12px;
-      object-fit: cover;
-      background: #1a202c;
-    }
-
-    .btn-del {
-      background: rgba(255, 59, 92, 0.15);
-      color: var(--accent-red);
-      border: 1px solid rgba(255, 59, 92, 0.4);
-      padding: 7px 14px;
-      border-radius: 10px;
-      cursor: pointer;
-      font-weight: 700;
-      font-size: 0.82rem;
-    }
-
-    .status {
-      margin-top: 12px;
-      padding: 12px;
-      border-radius: 12px;
-      font-size: 0.88rem;
-      display: none;
-    }
-
-    .status.success {
-      display: block;
-      background: rgba(0, 230, 118, 0.12);
-      border: 1px solid rgba(0, 230, 118, 0.4);
-      color: var(--accent-green);
-    }
-
-    .status.error {
-      display: block;
-      background: rgba(255, 59, 92, 0.12);
-      border: 1px solid rgba(255, 59, 92, 0.4);
-      color: var(--accent-red);
-    }
-
-    .hidden { display: none; }
-
-    @keyframes floatOrb {
-      0% { transform: translate(0, 0) scale(1); }
-      100% { transform: translate(35px, 25px) scale(1.12); }
-    }
+    .empty-state { grid-column: 1 / -1; text-align: center; padding: 55px 20px; color: var(--text-muted); }
   </style>
-
-  <!-- Firebase SDKs -->
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 </head>
 <body>
-  <div class="bg-graphics">
-    <div class="orb orb-1"></div>
-    <div class="orb orb-2"></div>
-    <div class="orb orb-3"></div>
-    <div class="grid-overlay"></div>
-  </div>
+  <div class="bg-graphics"></div>
 
   <div class="container">
     <header>
-      <h1>
-        <div style="width:10px;height:10px;border-radius:50%;background:var(--accent-green);box-shadow:0 0 12px var(--accent-green);"></div>
-        MULTI-APP <span>PUBLISHER</span>
-      </h1>
-      <a href="index.html" class="back-link" target="_blank">Open App Store Website &rarr;</a>
+      <div class="brand">PRADEEP <span>APPS</span></div>
+      <input type="text" id="searchInput" class="search-box" placeholder="Search apps..." oninput="renderApps()">
     </header>
 
-    <!-- Personal PIN Lock -->
-    <div id="lockCard" class="card lock-screen">
-      <h2>Personal Publisher Access</h2>
-      <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 6px;">Enter your personal PIN to add or manage apps.</p>
-      <div class="pin-row">
-        <input type="password" id="pinInput" placeholder="Enter PIN (default: 1234)" style="max-width: 220px;" />
-        <button class="btn btn-primary" style="width: auto; margin-top: 0; padding: 0 22px;" onclick="unlock()">Unlock</button>
-      </div>
-      <div id="pinError" class="status error">Incorrect PIN. Default is 1234.</div>
-    </div>
-
-    <!-- Main Publisher Panel -->
-    <div id="publisherArea" class="hidden">
-      <div class="card">
-        <h2 style="font-size: 1.15rem; margin-bottom: 16px;">Publish App & Test Cloud</h2>
-
-        <!-- Test Cloud Connection Button -->
-        <div style="margin-bottom: 18px;">
-          <button type="button" class="btn btn-cyan" onclick="sendTestPing()">⚡ Test Cloud Connection (Ping Index)</button>
-          <div id="testPingStatus" style="font-size: 0.82rem; margin-top: 6px; color: var(--accent-cyan);"></div>
-        </div>
-
-        <!-- APK Option 1: Direct Download URL (Recommended for heavy files) -->
-        <div class="box-panel">
-          <label style="color: var(--text-main); font-weight: 600;">Option A: APK Direct Download URL (GitHub Raw Link)</label>
-          <input type="url" id="inputApkUrl" placeholder="https://raw.githubusercontent.com/.../app.apk" oninput="onApkUrlInput()" />
-        </div>
-
-        <!-- APK Option 2: Direct File Drop Zone -->
-        <div class="box-panel">
-          <label style="color: var(--text-main); font-weight: 600;">Option B: Upload Local APK File (.apk)</label>
-          <div class="drop-zone" onclick="document.getElementById('apkInput').click()">
-            <strong>Click or Drop your .apk file here</strong>
-            <span id="apkLabel" style="color: var(--accent-green); font-weight: 600; margin-top: 4px;"></span>
-          </div>
-          <input type="file" id="apkInput" accept=".apk,application/vnd.android.package-archive" class="hidden" onchange="onApkFileSelected(event)" />
-        </div>
-
-        <!-- App Icon Input -->
-        <div class="box-panel">
-          <label style="color: var(--text-main); font-weight: 600;">App Icon (File or URL)</label>
-          <div class="drop-zone" style="min-height: 70px;" onclick="document.getElementById('iconInput').click()">
-            <span>Click to pick Icon image file</span>
-            <img id="iconPreview" class="preview-icon hidden" alt="Icon Preview" />
-          </div>
-          <input type="file" id="iconInput" accept="image/*" class="hidden" onchange="onIconFileSelected(event)" />
-          <input type="url" id="iconUrlInput" placeholder="Or paste external icon URL..." oninput="onIconUrlChanged()" />
-        </div>
-
-        <!-- App Screenshots / Images -->
-        <div class="box-panel">
-          <label style="color: var(--text-main); font-weight: 600;">App Screenshots / Images</label>
-          <div class="drop-zone" style="min-height: 65px;" onclick="document.getElementById('ssInput').click()">
-            <span>+ Click to add images</span>
-          </div>
-          <input type="file" id="ssInput" accept="image/*" multiple class="hidden" onchange="onScreenshotsFileSelected(event)" />
-          <div class="url-row" style="margin-top: 6px;">
-            <input type="url" id="ssUrlInput" placeholder="Paste external image URL..." />
-            <button type="button" class="btn-small" onclick="addExternalScreenshotUrl()">+ Add URL</button>
-          </div>
-          <div id="ssPreviewList" class="ss-preview-list"></div>
-        </div>
-
-        <div class="grid-2">
-          <div class="form-group">
-            <label>App Name</label>
-            <input type="text" id="inputName" placeholder="e.g. Pradeep Recorder" />
-          </div>
-          <div class="form-group">
-            <label>Version</label>
-            <input type="text" id="inputVersion" value="v1.0.0" />
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label>Developer Name</label>
-          <input type="text" id="inputDev" value="Pradeep King" />
-        </div>
-
-        <div class="form-group">
-          <label>App Description</label>
-          <textarea id="inputDesc" rows="3" placeholder="Write what your app does..."></textarea>
-        </div>
-
-        <div class="form-group">
-          <label>What's New / Release Notes</label>
-          <input type="text" id="inputNotes" value="Initial official release." />
-        </div>
-
-        <button class="btn btn-green" id="publishBtn" onclick="publishApp()">+ Publish App Instantly</button>
-
-        <!-- Green Loading Progress Bar with Percentage -->
-        <div id="pubProgressWrap" class="progress-wrapper">
-          <div class="progress-header">
-            <span id="pubProgressLabel">Publishing to Cloud...</span>
-            <span id="pubProgressPercent">0%</span>
-          </div>
-          <div class="progress-track">
-            <div id="pubProgressFill" class="progress-fill"></div>
-          </div>
-        </div>
-
-        <div id="pubStatus" class="status"></div>
-      </div>
-
-      <!-- Published Apps Manager -->
-      <div class="card">
-        <h2 style="font-size: 1.1rem;">Cloud Published Apps (<span id="appCount">0</span>)</h2>
-        <div id="publishedList"></div>
-      </div>
-    </div>
+    <main id="appsGrid" class="apps-grid">
+      <div class="empty-state">Loading apps from apps.json...</div>
+    </main>
   </div>
 
   <script>
-    const ADMIN_PIN = '1234';
+    let appsList = [];
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyB2Cd8JUiS1g1450I0qqEYDYLWoEUKHtZA",
-      authDomain: "pradeep-app-store.firebaseapp.com",
-      projectId: "pradeep-app-store",
-      storageBucket: "pradeep-app-store.appspot.com",
-      messagingSenderId: "452581985951",
-      appId: "1:452581985951:web:7d3995e3a642b592c621be",
-      measurementId: "G-CBZ9SRG6EZ"
-    };
-
-    firebase.initializeApp(firebaseConfig);
-    const dbRef = firebase.database().ref('apps');
-    const testPingRef = firebase.database().ref('testPing');
-
-    let selectedApkFile = null;
-    let selectedIconSrc = '';
-    let selectedScreenshots = [];
-
-    function unlock() {
-      if (document.getElementById('pinInput').value === ADMIN_PIN) {
-        document.getElementById('lockCard').classList.add('hidden');
-        document.getElementById('publisherArea').classList.remove('hidden');
-        refreshPublishedList();
-      } else {
-        document.getElementById('pinError').style.display = 'block';
-      }
-    }
-
-    document.getElementById('pinInput').addEventListener('keypress', e => {
-      if (e.key === 'Enter') unlock();
-    });
-
-    async function sendTestPing() {
-      const statusEl = document.getElementById('testPingStatus');
-      statusEl.textContent = 'Sending test ping to index...';
+    async function loadApps() {
       try {
-        await testPingRef.set({
-          message: "Test Success! Cloud is live and connected.",
-          timestamp: Date.now()
-        });
-        statusEl.textContent = '✅ Test Ping sent successfully! Check your index.html page.';
+        const response = await fetch('apps.json?t=' + Date.now());
+        if (!response.ok) throw new Error('apps.json not found');
+        appsList = await response.json();
+        renderApps();
       } catch (err) {
-        statusEl.textContent = '❌ Error sending ping: ' + err.message;
+        document.getElementById('appsGrid').innerHTML = `<div class="empty-state">No apps found in apps.json yet. Upload your apps.json file to GitHub!</div>`;
       }
     }
 
-    function onApkUrlInput() {
-      const url = document.getElementById('inputApkUrl').value.trim();
-      if (!url) return;
-      try {
-        const parts = url.split('/');
-        const lastPart = parts[parts.length - 1].split('?')[0];
-        if (lastPart && lastPart.toLowerCase().endsWith('.apk')) {
-          if (!document.getElementById('inputName').value.trim()) {
-            document.getElementById('inputName').value = decodeURIComponent(lastPart).replace(/\.apk$/i, '').replace(/[_-]+/g, ' ');
-          }
-        }
-      } catch (_) {}
-    }
+    function renderApps() {
+      const grid = document.getElementById('appsGrid');
+      const q = document.getElementById('searchInput').value.toLowerCase().trim();
+      const filtered = appsList.filter(a => (a.name || '').toLowerCase().includes(q));
 
-    function formatBytes(bytes) {
-      if (!bytes) return '0 MB';
-      const mb = bytes / (1024 * 1024);
-      return mb >= 1 ? mb.toFixed(2) + ' MB' : (bytes / 1024).toFixed(1) + ' KB';
-    }
-
-    function onApkFileSelected(e) {
-      const file = e.target.files[0];
-      if (!file) return;
-      selectedApkFile = file;
-      document.getElementById('apkLabel').textContent = `${file.name} (${formatBytes(file.size)})`;
-      if (!document.getElementById('inputName').value.trim()) {
-        document.getElementById('inputName').value = file.name.replace(/\.apk$/i, '').replace(/[_-]+/g, ' ');
+      if (filtered.length === 0) {
+        grid.innerHTML = `<div class="empty-state">No matching apps found.</div>`;
+        return;
       }
-    }
 
-    function fileToDataUrl(file) {
-      return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onload = () => resolve(reader.result);
-        reader.onerror = () => reject(reader.error);
-        reader.readAsDataURL(file);
-      });
-    }
-
-    function compressImageFile(file, maxWidth = 800, quality = 0.78) {
-      return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onload = e => {
-          const img = new Image();
-          img.onload = () => {
-            let w = img.width;
-            let h = img.height;
-            if (w > maxWidth) {
-              h = Math.round((h * maxWidth) / w);
-              w = maxWidth;
-            }
-            const canvas = document.createElement('canvas');
-            canvas.width = w;
-            canvas.height = h;
-            const ctx = canvas.getContext('2d');
-            ctx.drawImage(img, 0, 0, w, h);
-            resolve(canvas.toDataURL('image/webp', quality));
-          };
-          img.onerror = () => resolve(e.target.result);
-          img.src = e.target.result;
-        };
-        reader.onerror = () => reject(reader.error);
-        reader.readAsDataURL(file);
-      });
-    }
-
-    async function onIconFileSelected(e) {
-      const file = e.target.files[0];
-      if (!file) return;
-      selectedIconSrc = await compressImageFile(file, 200, 0.85);
-      document.getElementById('iconUrlInput').value = '';
-      const preview = document.getElementById('iconPreview');
-      preview.src = selectedIconSrc;
-      preview.classList.remove('hidden');
-    }
-
-    function onIconUrlChanged() {
-      const url = document.getElementById('iconUrlInput').value.trim();
-      selectedIconSrc = url;
-      const preview = document.getElementById('iconPreview');
-      if (url) {
-        preview.src = url;
-        preview.classList.remove('hidden');
-      } else {
-        preview.classList.add('hidden');
-      }
-    }
-
-    async function onScreenshotsFileSelected(e) {
-      const files = Array.from(e.target.files || []);
-      for (const file of files) {
-        const compressed = await compressImageFile(file, 800, 0.78);
-        selectedScreenshots.push(compressed);
-      }
-      e.target.value = '';
-      renderScreenshotPreviews();
-    }
-
-    function addExternalScreenshotUrl() {
-      const input = document.getElementById('ssUrlInput');
-      const url = input.value.trim();
-      if (!url) return;
-      selectedScreenshots.push(url);
-      input.value = '';
-      renderScreenshotPreviews();
-    }
-
-    function removeScreenshotAt(idx) {
-      selectedScreenshots.splice(idx, 1);
-      renderScreenshotPreviews();
-    }
-
-    function renderScreenshotPreviews() {
-      const container = document.getElementById('ssPreviewList');
-      container.innerHTML = selectedScreenshots.map((src, i) => `
-        <div class="ss-thumb-wrap">
-          <img src="${src}" alt="Image ${i + 1}" />
-          <button type="button" class="ss-remove-btn" onclick="removeScreenshotAt(${i})">&times;</button>
+      grid.innerHTML = filtered.map(app => `
+        <div class="app-card">
+          <div class="app-card-top">
+            <div class="app-icon">
+              ${app.iconSrc ? `<img src="${app.iconSrc}" />` : (app.name || 'A').charAt(0)}
+            </div>
+            <div class="app-title-area">
+              <h3>${app.name}</h3>
+              <p>${app.version} • ${app.sizeText}</p>
+            </div>
+          </div>
+          <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 14px; flex: 1;">${app.description || 'No description.'}</p>
+          <a href="${app.apkUrl}" class="btn-download" download="${app.fileName}">⬇ Download APK</a>
         </div>
       `).join('');
     }
 
-    function updateProgress(percent, labelText) {
-      const wrap = document.getElementById('pubProgressWrap');
-      wrap.style.display = 'block';
-      document.getElementById('pubProgressPercent').textContent = `${percent}%`;
-      document.getElementById('pubProgressFill').style.width = `${percent}%`;
-      if (labelText) {
-        document.getElementById('pubProgressLabel').textContent = labelText;
-      }
-    }
-
-    function showStatus(msg, isError = false) {
-      const el = document.getElementById('pubStatus');
-      el.textContent = msg;
-      el.className = 'status ' + (isError ? 'error' : 'success');
-    }
-
-    async function publishApp() {
-      const name = document.getElementById('inputName').value.trim();
-      const apkUrlInput = document.getElementById('inputApkUrl').value.trim();
-
-      if (!name) {
-        showStatus('Please enter the App Name!', true);
-        return;
-      }
-      if (!apkUrlInput && !selectedApkFile) {
-        showStatus('Please provide an APK URL or upload an APK file!', true);
-        return;
-      }
-
-      document.getElementById('pubStatus').style.display = 'none';
-      const btn = document.getElementById('publishBtn');
-      btn.disabled = true;
-
-      updateProgress(15, 'Preparing package...');
-
-      let finalApkUrl = apkUrlInput;
-      let fileName = 'app.apk';
-      let sizeText = '10 MB';
-
-      if (selectedApkFile) {
-        updateProgress(40, 'Encoding local APK file...');
-        finalApkUrl = await fileToDataUrl(selectedApkFile);
-        fileName = selectedApkFile.name;
-        sizeText = formatBytes(selectedApkFile.size);
-      } else if (apkUrlInput) {
-        const parts = apkUrlInput.split('/');
-        const lastPart = parts[parts.length - 1].split('?')[0];
-        if (lastPart) fileName = decodeURIComponent(lastPart);
-      }
-
-      updateProgress(75, 'Syncing to Firebase Cloud...');
-
-      const appId = 'app_' + Date.now();
-      const record = {
-        id: appId,
-        name,
-        version: document.getElementById('inputVersion').value.trim() || 'v1.0.0',
-        developer: document.getElementById('inputDev').value.trim() || 'Pradeep King',
-        description: document.getElementById('inputDesc').value.trim(),
-        notes: document.getElementById('inputNotes').value.trim(),
-        fileName,
-        sizeText,
-        apkUrl: finalApkUrl,
-        iconSrc: selectedIconSrc,
-        screenshots: [...selectedScreenshots],
-        createdAt: Date.now()
-      };
-
-      try {
-        await dbRef.child(appId).set(record);
-        updateProgress(100, 'Published Successfully!');
-        showStatus(`"${name}" published successfully! Live on index.html.`);
-
-        selectedApkFile = null;
-        selectedIconSrc = '';
-        selectedScreenshots = [];
-        document.getElementById('inputApkUrl').value = '';
-        document.getElementById('apkLabel').textContent = '';
-        document.getElementById('iconInput').value = '';
-        document.getElementById('iconUrlInput').value = '';
-        document.getElementById('ssInput').value = '';
-        document.getElementById('ssUrlInput').value = '';
-        document.getElementById('iconPreview').classList.add('hidden');
-        document.getElementById('ssPreviewList').innerHTML = '';
-        document.getElementById('inputName').value = '';
-        document.getElementById('inputDesc').value = '';
-
-        refreshPublishedList();
-        setTimeout(() => {
-          document.getElementById('pubProgressWrap').style.display = 'none';
-        }, 3000);
-      } catch (err) {
-        document.getElementById('pubProgressWrap').style.display = 'none';
-        showStatus('Failed to publish: ' + err.message, true);
-      } finally {
-        btn.disabled = false;
-      }
-    }
-
-    async function removeApp(id) {
-      if (confirm('Delete this app?')) {
-        await dbRef.child(id).remove();
-      }
-    }
-
-    function refreshPublishedList() {
-      dbRef.on('value', (snapshot) => {
-        const data = snapshot.val();
-        const apps = data ? Object.values(data) : [];
-        apps.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
-        document.getElementById('appCount').textContent = apps.length;
-        const list = document.getElementById('publishedList');
-
-        if (apps.length === 0) {
-          list.innerHTML = `<p style="color: var(--text-muted); font-size: 0.88rem; margin-top: 12px;">No apps published yet.</p>`;
-          return;
-        }
-
-        list.innerHTML = apps.map(app => `
-          <div class="published-item">
-            <div class="pub-left">
-              ${app.iconSrc ? `<img src="${app.iconSrc}" alt="${app.name}" />` : `<div style="width:46px;height:46px;border-radius:10px;background:#1e2536;"></div>`}
-              <div>
-                <strong style="font-size: 0.95rem;">${app.name}</strong>
-                <div style="font-size: 0.8rem; color: var(--text-muted);">${app.version} • ${app.fileName} (${app.sizeText})</div>
-              </div>
-            </div>
-            <button class="btn-del" onclick="removeApp('${app.id}')">Delete</button>
-          </div>
-        `).join('');
-      });
-    }
+    loadApps();
   </script>
 </body>
 </html>
