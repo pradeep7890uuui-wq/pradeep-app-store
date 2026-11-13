@@ -26,6 +26,7 @@
       display: flex;
       justify-content: center;
       padding: 24px 16px 48px;
+      position: relative;
     }
 
     .bg-graphics {
@@ -254,7 +255,6 @@
         return;
       }
 
-      // Generates the complete index.html file with all apps embedded inside
       const htmlContent = `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -336,7 +336,7 @@
             </div>
           </div>
           <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 14px; flex: 1;">\${app.description || 'No description provided.'}</p>
-          <a href="\${app.apkUrl}" class="btn-download" download="\href">\u2b07 Download APK</a>
+          <a href="\${app.apkUrl}" class="btn-download" download="\${app.fileName}">⬇ Download APK</a>
         </div>
       \`).join('');
     }
@@ -355,7 +355,7 @@
       document.body.removeChild(a);
       URL.revokeObjectURL(url);
 
-      showStatus('Success! index.html downloaded. Upload it to GitHub and check your phone!');
+      showStatus('Success! Complete index.html downloaded. Upload it to GitHub!');
     }
   </script>
 </body>
